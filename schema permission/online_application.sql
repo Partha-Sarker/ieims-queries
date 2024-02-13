@@ -1,6 +1,5 @@
 ALTER AUTHORIZATION ON SCHEMA::[online_application] TO [dbo];
 DROP USER IF EXISTS [online_application_user]
-DROP LOGIN [online_application_login];
 IF EXISTS (SELECT * FROM sys.server_principals WHERE name = 'online_application_login')
 BEGIN
     DROP LOGIN [online_application_login];

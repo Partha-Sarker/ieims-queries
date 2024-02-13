@@ -1,6 +1,5 @@
 ALTER AUTHORIZATION ON SCHEMA::[examiner_assignment] TO [dbo];
 DROP USER IF EXISTS [examiner_assignment_user]
-DROP LOGIN [examiner_assignment_login];
 IF EXISTS (SELECT * FROM sys.server_principals WHERE name = 'examiner_assignment_login')
 BEGIN
     DROP LOGIN [examiner_assignment_login];

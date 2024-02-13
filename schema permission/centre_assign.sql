@@ -1,6 +1,5 @@
 ALTER AUTHORIZATION ON SCHEMA::[centre_assign] TO [dbo];
 DROP USER IF EXISTS [centre_assign_user]
-DROP LOGIN [centre_assign_login];
 IF EXISTS (SELECT * FROM sys.server_principals WHERE name = 'centre_assign_login')
 BEGIN
     DROP LOGIN [centre_assign_login];

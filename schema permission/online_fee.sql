@@ -1,6 +1,5 @@
 ALTER AUTHORIZATION ON SCHEMA::[online_fee] TO [dbo];
 DROP USER IF EXISTS [online_fee_user]
-DROP LOGIN [online_fee_login];
 IF EXISTS (SELECT * FROM sys.server_principals WHERE name = 'online_fee_login')
 BEGIN
     DROP LOGIN [online_fee_login];
