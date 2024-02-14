@@ -1,11 +1,11 @@
-DECLARE @MyTableVariable TABLE
+DECLARE @UserDBCredential TABLE
 (
     db_name VARCHAR(100),
     password NVARCHAR(100)
 );
 
 -- Insert data into the table variable
-INSERT INTO @MyTableVariable (db_name, password)
+INSERT INTO @UserDBCredential (db_name, password)
 VALUES
     ('boardreg', N'=F!)&scL]qbZgY]/f\w0iLe>d'),
     ('boardffu', N'd#G&LXYx<<g8\C>fgFlK3b:HR'),
@@ -23,7 +23,7 @@ DECLARE @CurrentPassword NVARCHAR(100);
 
 -- Declare a cursor to iterate through the table variable
 DECLARE db_cursor CURSOR FOR
-SELECT db_name, password FROM @MyTableVariable;
+SELECT db_name, password FROM @UserDBCredential;
 
 -- Open the cursor
 OPEN db_cursor;
@@ -34,20 +34,18 @@ FETCH NEXT FROM db_cursor INTO @CurrentDBName, @CurrentPassword;
 -- Loop through the rows
 WHILE @@FETCH_STATUS = 0
 BEGIN
-    DECLARE @SqlScript NVARCHAR(MAX);
-
-    SET @SqlScript = '
+    DECLARE @SqlScript NVARCHAR(MAX) = '
         ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentDBName + '] TO [dbo];
         IF EXISTS(SELECT 1 FROM sys.schemas WHERE name = ''' + @CurrentDBName + '_batchjob'')
         BEGIN
            ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentDBName + '_batchjob] TO [dbo];
         END
         DROP USER IF EXISTS [' + @CurrentDBName + '_user];
-        IF EXISTS (SELECT * FROM sys.server_principals WHERE name = ''' + @CurrentDBName + '_login'')
+
+        IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = ''' + @CurrentDBName + '_login'')
         BEGIN
-            DROP LOGIN [' + @CurrentDBName + '_login];
+           CREATE LOGIN ' + @CurrentDBName + '_login WITH PASSWORD=N''' + @CurrentPassword + ''';
         END
-        CREATE LOGIN ' + @CurrentDBName + '_login WITH PASSWORD=N''' + @CurrentPassword + ''';
         CREATE USER ' + @CurrentDBName + '_user FOR LOGIN ' + @CurrentDBName + '_login;
         ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentDBName + '] TO [' + @CurrentDBName + '_user];
         IF EXISTS(SELECT 1 FROM sys.schemas WHERE name = ''' + @CurrentDBName + '_batchjob'')
@@ -59,12 +57,12 @@ BEGIN
 
     BEGIN TRY
         EXEC sp_executesql @SqlScript;
-        PRINT 'Successfully created user and login for DB Name: ' + @CurrentDBName + '; with password Password: ' + @CurrentPassword;
+        PRINT 'Successfully permitted user and login for DB Name: '
+                  + @CurrentDBName + '; with password Password: ' + @CurrentPassword;
     END TRY
     BEGIN CATCH
-        PRINT 'Failed to create user and login for DB Name: ' + @CurrentDBName + '; with password Password: ' + @CurrentPassword;
-        PRINT ERROR_MESSAGE();
-        PRINT @SqlScript
+        PRINT 'Failed to permit user and login for DB Name: '
+                  + @CurrentDBName + '; with password Password: ' + @CurrentPassword + ': Error: ' + ERROR_MESSAGE();
     END catch
 
     -- Fetch the next row
