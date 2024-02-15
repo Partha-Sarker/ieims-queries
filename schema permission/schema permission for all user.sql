@@ -18,7 +18,7 @@ VALUES
     ('smspushpull', N'&RBvgh:%#x/(>FrD4Us_N6ybh')
 ;
 
-DECLARE @CurrentDBName VARCHAR(100);
+DECLARE @CurrentSchemaName VARCHAR(100);
 DECLARE @CurrentPassword NVARCHAR(100);
 
 -- Declare a cursor to iterate through the table variable
@@ -29,44 +29,44 @@ SELECT db_name, password FROM @UserDBCredential;
 OPEN db_cursor;
 
 -- Fetch the first row
-FETCH NEXT FROM db_cursor INTO @CurrentDBName, @CurrentPassword;
+FETCH NEXT FROM db_cursor INTO @CurrentSchemaName, @CurrentPassword;
 
 -- Loop through the rows
 WHILE @@FETCH_STATUS = 0
 BEGIN
     DECLARE @SqlScript NVARCHAR(MAX) = '
-        ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentDBName + '] TO [dbo];
-        IF EXISTS(SELECT 1 FROM sys.schemas WHERE name = ''' + @CurrentDBName + '_batchjob'')
+        ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentSchemaName + '] TO [dbo];
+        IF EXISTS(SELECT 1 FROM sys.schemas WHERE name = ''' + @CurrentSchemaName + '_batchjob'')
         BEGIN
-           ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentDBName + '_batchjob] TO [dbo];
+           ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentSchemaName + '_batchjob] TO [dbo];
         END
-        DROP USER IF EXISTS [' + @CurrentDBName + '_user];
+        DROP USER IF EXISTS [' + @CurrentSchemaName + '_user];
 
-        IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = ''' + @CurrentDBName + '_login'')
+        IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = ''' + @CurrentSchemaName + '_login'')
         BEGIN
-           CREATE LOGIN ' + @CurrentDBName + '_login WITH PASSWORD=N''' + @CurrentPassword + ''';
+           CREATE LOGIN ' + @CurrentSchemaName + '_login WITH PASSWORD=N''' + @CurrentPassword + ''';
         END
-        CREATE USER ' + @CurrentDBName + '_user FOR LOGIN ' + @CurrentDBName + '_login;
-        ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentDBName + '] TO [' + @CurrentDBName + '_user];
-        IF EXISTS(SELECT 1 FROM sys.schemas WHERE name = ''' + @CurrentDBName + '_batchjob'')
+        CREATE USER ' + @CurrentSchemaName + '_user FOR LOGIN ' + @CurrentSchemaName + '_login;
+        ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentSchemaName + '] TO [' + @CurrentSchemaName + '_user];
+        IF EXISTS(SELECT 1 FROM sys.schemas WHERE name = ''' + @CurrentSchemaName + '_batchjob'')
         BEGIN
-            ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentDBName + '_batchjob] TO [' + @CurrentDBName + '_user];
+            ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentSchemaName + '_batchjob] TO [' + @CurrentSchemaName + '_user];
         END
-        GRANT CREATE TABLE, CREATE VIEW, CREATE FUNCTION, CREATE PROCEDURE TO ' + @CurrentDBName + '_user;
-        ALTER USER ' + @CurrentDBName + '_user WITH DEFAULT_SCHEMA = ' + @CurrentDBName + ';';
+        GRANT CREATE TABLE, CREATE VIEW, CREATE FUNCTION, CREATE PROCEDURE TO ' + @CurrentSchemaName + '_user;
+        ALTER USER ' + @CurrentSchemaName + '_user WITH DEFAULT_SCHEMA = ' + @CurrentSchemaName + ';';
 
     BEGIN TRY
         EXEC sp_executesql @SqlScript;
         PRINT 'Successfully permitted user and login for DB Name: '
-                  + @CurrentDBName + '; with password Password: ' + @CurrentPassword;
+                  + @CurrentSchemaName + '; with password Password: ' + @CurrentPassword;
     END TRY
     BEGIN CATCH
         PRINT 'Failed to permit user and login for DB Name: '
-                  + @CurrentDBName + '; with password Password: ' + @CurrentPassword + ': Error: ' + ERROR_MESSAGE();
+                  + @CurrentSchemaName + '; with password Password: ' + @CurrentPassword + ': Error: ' + ERROR_MESSAGE();
     END catch
 
     -- Fetch the next row
-    FETCH NEXT FROM db_cursor INTO @CurrentDBName, @CurrentPassword;
+    FETCH NEXT FROM db_cursor INTO @CurrentSchemaName, @CurrentPassword;
 END;
 
 -- Close and deallocate the cursor
