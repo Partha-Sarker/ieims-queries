@@ -1,18 +1,15 @@
-select era.exam_role,
-       CASE
-           WHEN s.last_code_for_slot1 is null or era.code <= s.last_code_for_slot1 THEN 'slot 1'
-           ELSE 'slot 2'
-           END,
-       count(distinct era.id), sum(sdb.no_of_scripts_distributed)
+select teacher_code, exam_role
 from examiner_assignment.exam_role_assignment era
-         join examiner_assignment.schedule_detail sd on sd.subject_paper_code = era.subject_paper_code
-         join examiner_assignment.schedule s on sd.schedule_id = s.id
-         left join examiner_assignment.script_distribution sdb on era.id = sdb.exam_role_assignment_id
-where era.subject_paper_code = '101'
-  and era.appointment_status in ('FINALIZED', 'CONFIRMED')
-group by era.exam_role,
-         CASE
-             WHEN s.last_code_for_slot1 is null or era.code <= s.last_code_for_slot1 THEN 'slot 1'
-             ELSE 'slot 2'
-             END;
-
+         join examiner_assignment.teacher_profile tp on era.teacher_profile_id = tp.id
+where appointment_status in ('CONFIRMED', 'FINALIZED')
+  and exam_role IN ('EXAMINER', 'HEAD_EXAMINER')
+--   and teacher_code IN (
+--                        '0000001082',
+--                        '0000018256',
+--                        '0000019063',
+--                        '0000043277',
+--                        '0000044983',
+--                        '0000079394'
+--     )
+-- and teacher_code = '0000001082'
+group by teacher_code, exam_role having count(era.id) > 1
