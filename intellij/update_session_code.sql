@@ -1,0 +1,5 @@
+update registration set session_code = 'JSC-2022-2022', group_code = 'JSC_GENERAL' where session_code like '%JSC%'
+update registration set session_code = 'SSC-2022-2023', group_code = 'SSC_SCIENCE' where session_code like '%SSC%'
+update registration set session_code = 'HSC-2022-2023', group_code = 'HSC_SCIENCE' where session_code like '%HSC%'
+-- update registration set session_code = 'SSC_VOC-2010-2011' where session_code like '%SSC%'
+-- update registration set group_code = '61' where session_code = 'SSC_VOC-2010-2011'
