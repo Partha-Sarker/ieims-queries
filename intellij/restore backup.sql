@@ -61,7 +61,7 @@ RESTORE DATABASE [examiner-assignment] FROM DISK = '/var/opt/mssql/data/eap_14_f
 USE master GO
 ALTER DATABASE [deb] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
 DROP DATABASE [deb]
-RESTORE DATABASE [deb] FROM DISK = '/var/opt/mssql/data/deb-6-3-24.BAK';
+RESTORE DATABASE [deb] FROM DISK = '/var/opt/mssql/data/deb-10-3-24.BAK';
 
 
 USE master GO

@@ -3,6 +3,8 @@
   <component name="SqlDialectMappings">
     <file url="file://$USER_HOME$/DSi/CAS/registration_summary_sylhet_board.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/CRVS/additional.sql" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/CRVS/kill session.sql" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/CRVS/production schema.sql" dialect="Oracle" />
     <file url="file://$PROJECT_DIR$/CRVS/sequence.sql" dialect="Oracle" />
     <file url="file://$PROJECT_DIR$/CRVS/table.sql" dialect="Oracle" />
     <file url="file://$PROJECT_DIR$/CRVS/view.sql" dialect="Oracle" />

@@ -35,6 +35,10 @@ FETCH NEXT FROM db_cursor INTO @CurrentSchemaName, @CurrentPassword;
 WHILE @@FETCH_STATUS = 0
 BEGIN
     DECLARE @SqlScript NVARCHAR(MAX) = '
+        IF EXISTS (SELECT 1 FROM sys.schemas WHERE name = ''' + @CurrentSchemaName + ''')
+        BEGIN
+            ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentSchemaName + '] TO [dbo];
+        END
         ALTER AUTHORIZATION ON SCHEMA::[' + @CurrentSchemaName + '] TO [dbo];
         IF EXISTS(SELECT 1 FROM sys.schemas WHERE name = ''' + @CurrentSchemaName + '_batchjob'')
         BEGIN
