@@ -1,3 +1,20 @@
+SELECT session_id, name
+FROM sys.dm_exec_sessions join sys.databases on databases.database_id = dm_exec_sessions.database_id
+WHERE login_name = 'boardffu_login' and name = 'beb'
+
+kill 615;
+kill 651;
+kill 724;
+kill 808;
+kill 1176;
+kill 1257;
+kill 1280;
+kill 1325;
+kill 1360;
+kill 2301;
+
+
+
 ALTER AUTHORIZATION ON SCHEMA::[boardffu] TO [dbo];
 ALTER AUTHORIZATION ON SCHEMA::[boardffu_batchjob] TO [dbo];
 DROP USER IF EXISTS [boardffu_user]
