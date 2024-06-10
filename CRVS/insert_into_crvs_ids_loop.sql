@@ -1,5 +1,5 @@
 DECLARE
-    l_batch_size CONSTANT PLS_INTEGER := 200000; -- Batch size
+    l_batch_size CONSTANT PLS_INTEGER := 20000; -- Batch size
     l_rows_processed PLS_INTEGER := 0; -- Counter for rows processed
 BEGIN
     LOOP
