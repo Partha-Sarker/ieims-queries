@@ -8,6 +8,7 @@
     <file url="file://$PROJECT_DIR$/CRVS/batch-pdf.sql" dialect="Oracle" />
     <file url="file://$PROJECT_DIR$/CRVS/create edu_id_allocation_job table.sql" dialect="Oracle" />
     <file url="file://$PROJECT_DIR$/CRVS/edu id generation statistics.sql" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/CRVS/id card related.sql" dialect="Oracle" />
     <file url="file://$PROJECT_DIR$/CRVS/id card.sql" dialect="Oracle" />
     <file url="file://$PROJECT_DIR$/CRVS/insert_into_crvs_ids.sql" dialect="Oracle" />
     <file url="file://$PROJECT_DIR$/CRVS/insert_into_crvs_ids_loop.sql" dialect="Oracle" />

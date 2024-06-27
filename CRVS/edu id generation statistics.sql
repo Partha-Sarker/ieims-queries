@@ -1,6 +1,6 @@
 select count(id), sysdate
 from CRVS_IDS
-where STATUS != 0
+where STATUS = 0
 /
 
 select eiaj.ID, count(ci.id)

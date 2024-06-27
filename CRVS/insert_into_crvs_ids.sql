@@ -10,7 +10,6 @@ COMMIT;
 
 SELECT count(r.ID)
 FROM STD_REGISTRATION_INFO r
-         JOIN INSTITUTES i ON r.EIIN = i.EIIN
          LEFT JOIN CRVS_IDS c ON r.ID = c.STUDENT_ID
 WHERE c.id IS NULL;
 
@@ -31,3 +30,5 @@ from CRVS_IDS c
          join STD_REGISTRATION_INFO r on r.id = c.STUDENT_ID
 where r.STD_CRVS_ID is not null
   and (c.STATUS != 1 or c.MESSAGE is not null or c.JOB_ID is not null)
+/
+select count(id) from CRVS_IDS where STATUS = 0
